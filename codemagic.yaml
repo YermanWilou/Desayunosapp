@@ -4,25 +4,28 @@ workflows:
   ios:
     name: Build and Publish iOS App
     max_build_duration: 120  # Tiempo máximo de construcción en minutos
+    environment:
+      xcode: '14.2'  # Especifica la versión de Xcode que deseas usar
+    triggers:
+      - schedule:
+          cron: '0 0 * * *'  # Ejemplo de cronograma para ejecutar el flujo de trabajo diariamente a medianoche
     jobs:
       - name: Build iOS app
         macos:
-          xcode: '14.2.0'  # Asegúrate de usar la versión de Xcode correcta
+          xcode: '14.2'  # Asegúrate de usar la versión de Xcode correcta
         steps:
           - checkout
 
-          - name: Install Python dependencies
-            run:
-              name: Install dependencies
+          - run:
+              name: Install Python dependencies
               command: |
                 pip install buildozer cython
 
-          - name: Build iOS app
-            run:
-              name: Build app
+          - run:
+              name: Build iOS app
               command: |
                 buildozer ios debug
 
-          - name: Upload IPA file
-            artifacts:
-              - bin/*.ipa
+          - archive:
+              name: Upload IPA file
+              path: bin/*.ipa
