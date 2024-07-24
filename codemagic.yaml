@@ -1,24 +1,28 @@
-version: 2.0
+version: 2.1
 
 workflows:
   ios:
-    name: iOS Build Workflow
+    name: Build and Publish iOS App
     max_build_duration: 120  # Tiempo máximo de construcción en minutos
-    steps:
-      - checkout
-
-      - name: Install Python dependencies
-        run:
-          name: Install dependencies
-          command: |
-            pip install buildozer cython
-
+    jobs:
       - name: Build iOS app
-        run:
-          name: Build app
-          command: |
-            buildozer ios debug
+        macos:
+          xcode: '14.2.0'  # Asegúrate de usar la versión de Xcode correcta
+        steps:
+          - checkout
 
-      - name: Upload IPA file
-        artifacts:
-          - bin/*.ipa
+          - name: Install Python dependencies
+            run:
+              name: Install dependencies
+              command: |
+                pip install buildozer cython
+
+          - name: Build iOS app
+            run:
+              name: Build app
+              command: |
+                buildozer ios debug
+
+          - name: Upload IPA file
+            artifacts:
+              - bin/*.ipa
