@@ -5,22 +5,20 @@ workflows:
     name: iOS Build Workflow
     max_build_duration: 120  # Tiempo máximo de construcción en minutos
     steps:
-      - name: Checkout code
-        action: checkout
+      - checkout
 
       - name: Install Python dependencies
-        action: run
-        command: |
-          pip install buildozer
-          pip install cython
+        run:
+          name: Install dependencies
+          command: |
+            pip install buildozer cython
 
       - name: Build iOS app
-        action: run
-        command: |
-          buildozer ios debug
+        run:
+          name: Build app
+          command: |
+            buildozer ios debug
 
-      - name: Upload build artifacts
-        action: upload
-        path: bin/*.ipa
-
-      # Si tienes configuraciones adicionales, puedes agregarlas aquí.
+      - name: Upload IPA file
+        artifacts:
+          - bin/*.ipa
