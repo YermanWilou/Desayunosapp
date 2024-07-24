@@ -14,7 +14,8 @@ workflows:
           pip install buildozer cython
       - name: Build iOS app
         script: |
+          cd your-app
           buildozer ios debug
     artifacts:
-      - path: bin/*.ipa
+      - path: your-app/bin/*.ipa
         type: ipa
