@@ -17,6 +17,5 @@ workflows:
           cd your-app
           buildozer ios debug
     artifacts:
-      - name: ipa
-        path: your-app/bin/*.ipa
+      - path: your-app/bin/*.ipa
         type: ipa
