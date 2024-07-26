@@ -5,7 +5,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-from kivy.uix.image import Image
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
@@ -58,37 +57,38 @@ class DesayunosApp(App):
 
         # Área desplazable para las imágenes
         scroll_view = ScrollView(size_hint=(1, 0.55), do_scroll_x=False, do_scroll_y=True)
-        scroll_layout = GridLayout(cols=2, spacing=20, padding=[50, 10, 50, 10], size_hint_y=None)
+        scroll_layout = GridLayout(cols=2, spacing=0, padding=[50, -20, 100, 10], size_hint_y=None)
         scroll_layout.bind(minimum_height=scroll_layout.setter('height'))
 
         # Agregar botones con imágenes y etiquetas
         for product in self.cart.keys():
-            item_layout = BoxLayout(orientation='vertical', size_hint_y=None, height=300, spacing=5)
+            item_layout = BoxLayout(orientation='vertical', size_hint_y=None, height=250, spacing=5)
             
             # Envolver el label y el botón en otro BoxLayout para centrar el texto
-            text_and_image_layout = BoxLayout(orientation='vertical', size_hint_y=None, height=300, spacing=5, padding=[20, 0])
+            text_and_image_layout = BoxLayout(orientation='vertical', size_hint_y=None, height=250, spacing=5, padding=[20, 0])
             
-            # Etiqueta con texto centrado y un pequeño desplazamiento hacia la izquierda
+            # Etiqueta con texto centrado
             label = Label(
                 text=self.get_product_label(product),
                 size_hint_y=None,
                 height=30,
                 font_size='18sp',
                 halign='center',
-                text_size=(Window.width * 0.5, None)  # Ajusta el tamaño del texto
+                valign='middle',
+                text_size=(None, None)  # Ajusta el tamaño del texto
             )
             label.bind(size=label.setter('text_size'))
             text_and_image_layout.add_widget(label)
 
             # Cargar imagen y ajustar tamaño
             img_path = f'images/{product}.png'
-            image_button = Button(size_hint=(None, None), size=(250, 250), background_normal=img_path, background_down=img_path)
+            image_button = Button(size_hint=(None, None), size=(200, 200), background_normal=img_path, background_down=img_path)
             image_button.bind(on_press=self.add_to_cart(product))
 
             text_and_image_layout.add_widget(image_button)
 
             # Envolver en otro layout para centrar
-            wrapper_layout = BoxLayout(size_hint=(1, None), height=300, padding=(20, 0))
+            wrapper_layout = BoxLayout(size_hint=(1, None), height=250, padding=(20, 0))
             wrapper_layout.add_widget(text_and_image_layout)
 
             scroll_layout.add_widget(wrapper_layout)
